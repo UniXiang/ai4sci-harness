@@ -1,0 +1,12 @@
+anthropic>=0.104.0
+openai>=2.38.0
+PyYAML>=6.0
+weasyprint>=68.0
+Markdown>=3.10
+numpy>=2.4.0
+scipy>=1.17.0
+matplotlib>=3.10.0
+scikit-learn>=1.8.0
+pandas>=2.0.0
+fpdf2>=2.8.0
+PyMuPDF>=1.27.0

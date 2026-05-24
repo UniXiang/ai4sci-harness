@@ -1,0 +1,217 @@
+# =============================================================================
+# AI4Sci Harness — 5-Node Multi-Agent Research Collaboration Framework
+# =============================================================================
+
+project:
+  name: "Your Project Title Here"
+  description: >
+    Replace this with a concise description of your research project.
+    What is the core scientific question you want to investigate?
+
+# ---------------------------------------------------------------------------
+# Agent definitions
+# ---------------------------------------------------------------------------
+agents:
+  researcher:
+    name: "Researcher"
+    role: "Literature survey and theoretical background"
+    capabilities:
+      - literature
+      - reference
+      - survey
+      - background
+      - theory
+    constraints:
+      - "Cannot perform numerical computation"
+      - "Cannot write code"
+      - "Cannot derive equations"
+    system_prompt_key: "researcher"
+
+  planner:
+    name: "Planner"
+    role: "Scientific analysis and strategy design"
+    capabilities:
+      - plan
+      - strategy
+      - pseudo-code
+      - decompose
+      - design
+      - framework
+      - equation
+    constraints:
+      - "Cannot write runnable code"
+      - "Cannot perform numerical computation"
+      - "Cannot write paper sections"
+    system_prompt_key: "planner"
+
+  executor:
+    name: "Executor"
+    role: "Numerical simulation and code implementation"
+    capabilities:
+      - code
+      - implement
+      - simulate
+      - compute
+      - numerical
+      - run
+      - execute
+    constraints:
+      - "External tool outputs must NOT be used as final results"
+      - "No black-box predictions replacing causal physical analysis"
+      - "Code must be self-contained and directly runnable"
+    system_prompt_key: "executor"
+
+  critic:
+    name: "Critic"
+    role: "Code review and physical consistency verification"
+    capabilities:
+      - critic
+      - verify
+      - validate
+      - compliance
+      - audit
+    constraints:
+      - "Cannot modify code"
+      - "Cannot run code"
+    system_prompt_key: "critic"
+
+  writer:
+    name: "Writer"
+    role: "Paper writing and narrative integration"
+    capabilities:
+      - write
+      - paper
+      - draft
+      - compose
+      - section
+      - manuscript
+      - integrate
+    constraints:
+      - "Cannot perform numerical computation"
+      - "Cannot generate new figures (use Executor-generated figures)"
+    system_prompt_key: "writer"
+
+# ---------------------------------------------------------------------------
+# Multi-model backend routing
+# Each agent type can use a different LLM backend.
+# Supported backends: anthropic, deepseek, mimo, mock
+# ---------------------------------------------------------------------------
+agent_backend_routing:
+  researcher:
+    backend: "mimo"
+    model: "mimo-v2.5-pro"
+    base_url: "${MIMO_BASE_URL}"
+    api_key: "${MIMO_API_KEY}"
+    max_tokens: 8192
+    temperature: 0.3
+
+  planner:
+    backend: "deepseek"
+    model: "deepseek-v4-pro"
+    base_url: "${DEEPSEEK_BASE_URL}"
+    api_key: "${DEEPSEEK_API_KEY}"
+    max_tokens: 8192
+    temperature: 0.3
+
+  executor:
+    backend: "mimo"
+    model: "mimo-v2.5-pro"
+    base_url: "${MIMO_BASE_URL}"
+    api_key: "${MIMO_API_KEY}"
+    max_tokens: 8192
+    temperature: 0.3
+
+  critic:
+    backend: "deepseek"
+    model: "deepseek-v4-pro"
+    base_url: "${DEEPSEEK_BASE_URL}"
+    api_key: "${DEEPSEEK_API_KEY}"
+    max_tokens: 8192
+    temperature: 0.3
+
+  writer:
+    backend: "deepseek"
+    model: "deepseek-v4-pro"
+    base_url: "${DEEPSEEK_BASE_URL}"
+    api_key: "${DEEPSEEK_API_KEY}"
+    max_tokens: 8192
+    temperature: 0.3
+
+# ---------------------------------------------------------------------------
+# Sandbox settings
+# ---------------------------------------------------------------------------
+sandbox:
+  timeout: 300
+  max_output_bytes: 1048576   # 1 MB
+  python_path: ".venv/bin/python3"
+  allowed_imports:
+    - numpy
+    - scipy
+    - scipy.integrate
+    - scipy.optimize
+    - scipy.linalg
+    - matplotlib
+    - matplotlib.pyplot
+    - torch
+    - pandas
+    - json
+    - math
+    - csv
+    - itertools
+    - collections
+    - functools
+    - typing
+    - dataclasses
+    - pathlib
+    - warnings
+  blocked_imports:
+    - os
+    - subprocess
+    - sys
+    - shutil
+    - socket
+    - requests
+    - urllib
+
+# ---------------------------------------------------------------------------
+# Critic auto-correction loop
+# ---------------------------------------------------------------------------
+critic_loop:
+  max_retries: 3
+  timeout_per_review: 120
+
+# ---------------------------------------------------------------------------
+# Human-in-the-loop gate
+# ---------------------------------------------------------------------------
+human_gate:
+  enabled: true
+  commands:
+    approved: "approved"
+    modify: "modify"
+    abort: "abort"
+
+# ---------------------------------------------------------------------------
+# Enhanced tools & compliance rules (examples — customize for your project)
+# ---------------------------------------------------------------------------
+# enhanced_tools:
+#   ExternalTool:
+#     description: "Description of the external tool and its role"
+#     rule: "Compliance rule — what constraints must be satisfied"
+
+# ---------------------------------------------------------------------------
+# Output paths
+# ---------------------------------------------------------------------------
+output:
+  outputs_dir: "outputs"
+  sandbox_dir: "sandbox"
+  paper_dir: "paper"
+  context_file: "outputs/context.json"
+
+# ---------------------------------------------------------------------------
+# Default LLM backend (fallback if agent_backend_routing is not set)
+# ---------------------------------------------------------------------------
+llm:
+  backend: "mimo"
+  model: "mimo-v2.5-pro"
+  max_tokens: 8192
+  temperature: 0.3
